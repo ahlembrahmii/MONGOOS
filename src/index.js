@@ -1,10 +1,12 @@
-let db_connection = require("./database"); //import the database connection
-let UserModel = require("./models/user"); //import the user model
+const connect = require("./database");
+let Person = require("./models/person"); //import the user model
 
-let user = new UserModel({
+connect();
+
+/*let user = new Person({
   name: "ahlem",
   age: 21,
-  email: "PowerLifter@gmail.com",
+
   favoriteFoods: ["burrito", "s7an tounsi", "kaftaji"],
 });
 
@@ -13,24 +15,24 @@ user.save(function (err, data) {
   console.log(`data saved successfuly ${data}`);
 });
 
-UserModel.create([
+Person.create([
   {
     name: "ahmed",
     age: 35,
-    email: "ahmede@gmail.com",
+
     favoriteFoods: ["reatsu", "bankai", "getsuga tencho"],
   },
   {
     name: "naruto",
     age: 27,
-    email: "hokage@gmail.com",
+
     favoriteFoods: ["ramen", "dumbleings", "kaftaji"],
   },
   {
     name: "ryuk",
     age: 211,
-    email: "ryukx@gmail.com",
-    favoriteFoods: ["toffe7", "s7an tounsi", "kaftaji"],
+
+    favoriteFoods: ["toffe7", "s7an tounsi","ramen", "kaftaji"],
   },
 ])
   .then(() => {
@@ -40,19 +42,19 @@ UserModel.create([
     console.error(err);
   });
 
-UserModel.find({
-  name: "ichigo",
+Person.find({
+  name: "ahmed",
 })
   .then((res) => {
-    console.log("finding ppl with the name of ichigo");
+    console.log("finding ppl with the name of ahmed");
     console.log(res);
   })
   .catch((err) => {
     console.error(err);
   });
 
-let food = "kaftaji";
-UserModel.findOne({ favoriteFoods: { $elemMatch: { $eq: food } } })
+let food = ["ramen", "kaftaji"];
+Person.findOne({ favoriteFoods: { $in: food } })
   .then((res) => {
     console.log("finding ppl by the food he love");
     console.log(res);
@@ -60,8 +62,40 @@ UserModel.findOne({ favoriteFoods: { $elemMatch: { $eq: food } } })
   .catch((err) => {
     console.error(err);
   });
+Person.findById("62f51bc185a05724aa230814")
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+Person.findById("62f51bc185a05724aa230814")
+  .then((data) => {
+    data.favoriteFoods.push("hamburger");
+    data.save();
+    console.log(data);
+  })
 
-UserModel.remove({ name: "ahlem" })
+  .catch((err) => {
+    console.log(err);
+  });
+Person.findOneAndUpdate({ name: "ahmed" }, { age: 20 }, { new: true })
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+Person.findByIdAndRemove("62f51c886ad6f028e070c218")
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+Person.remove({ name: "ahlem" })
   .then((res) => {
     console.log("Delete work");
     console.log(res);
@@ -73,13 +107,13 @@ UserModel.remove({ name: "ahlem" })
   })
   .catch((err) => {
     console.error(err);
-  });
+  });*/
 
-let food = "burrito";
-UserModel.find({ favoriteFoods: { $elemMatch: { $eq: food } } })
+let food = "kaftaji";
+Person.find({ favoriteFoods: { $elemMatch: { $eq: food } } })
   .sort({ name: 1 })
   .limit(2)
-  .select({ age: false })
+  .select("-age")
   .exec(function (err, data) {
     if (err) console.error(err);
     console.log(data);
